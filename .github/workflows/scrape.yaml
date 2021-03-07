@@ -1,0 +1,34 @@
+# inspired by https://github.com/simonw/ca-fires-history/blob/main/.github/workflows/scrape.yml
+
+name: Scrape latest data
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron:  '15,35,55 * * * *'
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out this repo
+      uses: actions/checkout@v2
+    - name: Fetch latest data
+      run: |-
+        mkdir -p holdings
+        cd holdings
+        files=("ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv" "ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv" "ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv" "ARK_GENOMIC_REVOLUTION_MULTISECTOR_ETF_ARKG_HOLDINGS.csv" "ARK_FINTECH_INNOVATION_ETF_ARKF_HOLDINGS.csv" "THE_3D_PRINTING_ETF_PRNT_HOLDINGS.csv" "ARK_ISRAEL_INNOVATIVE_TECHNOLOGY_ETF_IZRL_HOLDINGS.csv")
+        
+        for file in ${files[@]}; do
+          curl https://ark-funds.com/wp-content/fundsiteliterature/csv/$file
+        done
+        curl https://ark-invest.com/wp-content/trades/ARK_Trades.pdf
+    - name: Commit and push if it changed
+      run: |-
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add -A
+        timestamp=$(date -u)
+        git commit -m "Latest data: ${timestamp}" || exit 0
+        git push
