@@ -1,4 +1,4 @@
-# inspired by https://github.com/simonw/ca-fires-history/blob/main/.github/workflows/scrape.yml
+# borrowed from https://github.com/tigger0jk/ark-invest-scraper
 
 name: Scrape latest data
 
@@ -18,12 +18,10 @@ jobs:
       run: |-
         mkdir -p holdings
         cd holdings
-        files=("ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv" "ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv" "ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv" "ARK_GENOMIC_REVOLUTION_MULTISECTOR_ETF_ARKG_HOLDINGS.csv" "ARK_FINTECH_INNOVATION_ETF_ARKF_HOLDINGS.csv" "THE_3D_PRINTING_ETF_PRNT_HOLDINGS.csv" "ARK_ISRAEL_INNOVATIVE_TECHNOLOGY_ETF_IZRL_HOLDINGS.csv")
-        
+        files=("ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv" "ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv" "ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv" "ARK_GENOMIC_REVOLUTION_MULTISECTOR_ETF_ARKG_HOLDINGS.csv" "ARK_FINTECH_INNOVATION_ETF_ARKF_HOLDINGS.csv" "THE_3D_PRINTING_ETF_PRNT_HOLDINGS.csv" "ARK_ISRAEL_INNOVATIVE_TECHNOLOGY_ETF_IZRL_HOLDINGS.csv" "ARK_SPACE_EXPLORATION_&_INNOVATION_ETF_ARKX_HOLDINGS.csv")
         for file in ${files[@]}; do
-          curl -A "etf-git-scrapper: github.com/x-Shen/etf-git-scrapper" https://ark-funds.com/wp-content/fundsiteliterature/csv/$file | python3 lint_csv.py > $file
+          curl -A "ark-scraper: 6ithub.com/x-Shen/etf-git-scraper" https://ark-funds.com/wp-content/fundsiteliterature/csv/$file | python3 lint_csv.py > $file
         done
-      
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
@@ -31,4 +29,4 @@ jobs:
         git add -A
         timestamp=$(date -u)
         git commit -m "Latest data: ${timestamp}" || exit 0
-        git push 
+        git push
