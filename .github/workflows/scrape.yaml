@@ -23,7 +23,7 @@ jobs:
         for file in ${files[@]}; do
           curl https://ark-funds.com/wp-content/fundsiteliterature/csv/$file
         done
-        curl https://ark-invest.com/wp-content/trades/ARK_Trades.pdf
+        curl https://ark-invest.com/wp-content/trades/Trade_Log.pdf
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
