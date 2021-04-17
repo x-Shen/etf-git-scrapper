@@ -22,6 +22,7 @@ jobs:
         for file in ${files[@]}; do
           curl -A "ark-scraper: 6ithub.com/x-Shen/etf-git-scraper" https://ark-funds.com/wp-content/fundsiteliterature/csv/$file | python3 lint_csv.py > $file
         done
+          curl -A "ark-scraper: 6ithub.com/x-Shen/etf-git-scraper" https://ark-invest.com/wp-content/trades/ARK_Trades.pdf > ARK_Trades.pdf
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
